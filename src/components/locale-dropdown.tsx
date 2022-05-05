@@ -35,10 +35,11 @@ export const LocaleDropdown: FC = () => {
     } else {
       pathname = `/${value}${pathname}`
     }
+    pathname = pathname.replace('/zh-CN', '')
     const url = new URL(location.href)
     url.pathname = pathname
     location.href = url.toString()
   }
 
-  return <Dropdown items={items} value={locale} onChange={onChange} />
+  return <Dropdown className="hidden-in-mobile-sidebar" items={items} value={locale} onChange={onChange} />
 }
