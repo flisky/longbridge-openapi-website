@@ -1,11 +1,20 @@
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext'
 import Cookies from 'js-cookie'
 
-export function getBasenameLocale() {
-  const invalidLocaleRegexResult = window.location.pathname.match(/^\/(zh-CN|en|zh-HK)\/?/)
+
+
+export function useBasenameLocale() {
+  const {
+    i18n: { currentLocale },
+  } = useDocusaurusContext()
+  if (typeof window === 'undefined') {
+    return currentLocale
+  }
+  const invalidLocaleRegexResult =  window.location.pathname.match(/^\/(zh-CN|en|zh-HK)\/?/)
   return invalidLocaleRegexResult?.[1]
 }
-export function getDefaultLocale() {
+export function useDefaultLocale() {
   const cookieLocale = Cookies.get('locale')
 
-  return getBasenameLocale() || cookieLocale || 'zh-CN'
+  return useBasenameLocale() || cookieLocale || 'zh-CN'
 }
