@@ -1,11 +1,13 @@
 ---
 title: WS 和 TCP 接入的不同点
+hide_title: true
 id: diff-ws-tcp
 slug: /socket/diff_ws_tcp
 sidebar_position: 6
+hide_table_of_contents: true
 ---
 
-### WS 和 TCP
+# WS 和 TCP 接入的不同点
 
 Longbridge 行情长连接同时支持 `WebSocket` 和 `TCP` 的接入，不同点主要如下：
 
