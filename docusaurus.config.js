@@ -16,6 +16,9 @@ const config = {
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   i18n,
+  customFields: {
+    isDev: process.env.STAGE === 'dev',
+  },
   favicon: 'https://pub.lbkrs.com/files/202107/35tULHe3n4Pp4EtA/logo.png',
   plugins: [
     'docusaurus-plugin-sass',
@@ -52,13 +55,27 @@ const config = {
           sidebarPath: require.resolve('./sidebars.js'),
           // todo I18n lang should redirect other dir
           editUrl: ({ locale, docPath }) => {
+            const isAutoGenDoc = docPath.includes('--autogen.md');
+
             let nextVersionDocsDirPath = 'docs';
-            if (docPath.includes('--autogen.md')) {
+            if (isAutoGenDoc) {
               docPath = docPath.replace('--autogen.md', '.yml');
               nextVersionDocsDirPath = 'swagger-docs';
             }
 
-            return `https://github.com/longbridgeapp/openapi-website/edit/main/${nextVersionDocsDirPath}/${docPath}`;
+            if (locale !== 'zh-CN') {
+              let targetPath = `i18n/${locale}/docusaurus-plugin-content-docs/current/${docPath}`;
+              if (isAutoGenDoc) {
+                targetPath = `${nextVersionDocsDirPath}/${locale}/${docPath}`;
+              }
+              return `https://github.com/longbridgeapp/openapi-website/edit/main/${targetPath}`;
+            } else {
+              if (docPath.includes('--autogen.md')) {
+                docPath = docPath.replace('--autogen.md', '.yml');
+                nextVersionDocsDirPath = 'swagger-docs';
+              }
+              return `https://github.com/longbridgeapp/openapi-website/edit/main/${nextVersionDocsDirPath}/${docPath}`;
+            }
           },
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
@@ -87,11 +104,12 @@ const config = {
         logo: {
           alt: 'Longbridge',
           href: openapiDomain,
+          target: '_self',
           src: 'https://pub.lbkrs.com/files/202204/U8NeviVyPf5Q7ecP/Group_156.png',
         },
         items: [
           {
-            to: '/',
+            to: openapiDomain,
             position: 'left',
             target: '_self',
             label: '开发者认证',
