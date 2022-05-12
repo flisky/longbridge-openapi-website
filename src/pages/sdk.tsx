@@ -1,12 +1,15 @@
-import React, { useEffect } from 'react';
-import Loading from '@site/src/components/loading';
-import { domainWithLocalPath } from '@site/src/utils/use-locale-prefix';
+import React from 'react';
+import SdkPage from '@site/src/features/sdk';
+import CppVersions from '@site/i18n/zh-CN/sdk-versions/cpp/index.md';
+import PythonVersions from '@site/i18n/zh-CN/sdk-versions/python/index.md';
 
-const SDKPageShouldRedirect = () => {
-  const path = domainWithLocalPath('https://open.longbridgeapp.com', 'sdk');
-  useEffect(() => {
-    window.location.href = path;
-  }, []);
-  return <Loading />;
+export default () => {
+  return (
+    <SdkPage
+      versions={{
+        cpp: <CppVersions />,
+        python: <PythonVersions />,
+      }}
+    />
+  );
 };
-export default SDKPageShouldRedirect;

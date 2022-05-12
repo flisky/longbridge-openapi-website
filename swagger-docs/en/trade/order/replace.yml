@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  description: "Replace Order, modify quantity or price"
+  description: "This API is used to replace order, modify quantity or price"
   version: "v1"
   title: "Replace Order"
 paths:
@@ -10,35 +10,35 @@ paths:
       parameters:
         - name: "order_id"
           type: "string"
-          description: "订单 ID"
+          description: "Order ID"
           required: true
         - name: "quantity"
           type: "string"
-          description: replaced quantity，example：`100`
+          description: "Replaced quantity, example: `100`"
           required: true
         - name: "price"
           required: false
-          description: replaced price，example：`388.5`<br/><br/>
-            `LO` / `ELO` / `ALO` / `ODD` / `LIT` Order Required
+          description: "Replaced price, example: `388.5`<br/><br/>
+            `LO` / `ELO` / `ALO` / `ODD` / `LIT` Order Required"
         - name: trigger_price
           required: false
-          description: trigger price，example：`388.5`<br/><br/>
-            `LIT` / `MIT` Order Required
+          description: "Trigger price, example: `388.5`<br/><br/>
+            `LIT` / `MIT` Order Required"
         - name: limit_offset
           required: false
-          description: limit offset amount<br/><br/>
+          description: Limit offset amount<br/><br/>
             `TSLPAMT` / `TSLPPCT` Order Required
         - name: trailing_amount
           required: false
-          description: trailing amount<br/><br/>
+          description: Trailing amount<br/><br/>
             `TSLPAMT` / `TSMAMT` Order Required
         - name: trailing_percent
           required: false
-          description: trailing percent<br/><br/>
+          description: Trailing percent<br/><br/>
             `TSLPPCT` / `TSMAPCT` Order Required
         - name: remark
           required: false
-          description: "remark (Maximum 64 characters)"
+          description: "Remark (Maximum 64 characters)"
       responses:
         "200":
           description: "The submission was successful and the order was commissioned."
@@ -47,11 +47,20 @@ paths:
       request_body:
         type: "python"
         value: |
-          def example():
-            from longbridge.http import Auth, Config, HttpClient
-            auth = Auth("${API_KEY}", "${API_KEY_SECRET}", "${TOKEN}")
-            config = Config(base_url = "https://openapi.longbridge.global")
-            client = HttpClient(auth, config)
-            result = client.put("/v1/openapi/trade/order", {"order_id": "683615454870679552",
-              "quantity": "100", "price":"300"})
-      response_body: { "code": 0, "message": "success" }
+          import os
+          import json
+          from longbridge.http import Auth, Config, HttpClient
+
+          auth = Auth(os.getenv("LONGBRIDGE_APP_KEY"), os.getenv("LONGBRIDGE_APP_SECRET"), access_token=os.getenv("LONGBRIDGE_ACCESS_TOKEN"))
+          http = HttpClient(auth, Config(base_url="https://openapi.longbridge.global"))
+
+          payload = {
+              "side": "Buy",
+          }
+
+          try:
+            resp = http.put("/v1/trade/order", payload=payload)
+            print(json.dumps(resp.data, indent=2))
+          except Exception as e:
+            print(f"Submit order error\ncode: {e.code}\nmessage: {e.message}")
+      response_body: { "code": 0, "message": "success", "data": {} }

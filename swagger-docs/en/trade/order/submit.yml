@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  description: "Submit Order for HK and US stocks, warrant and option"
+  description: "This API is used to submit order for HK and US stocks, warrant and option"
   version: "v1"
   title: "Submit Order"
 paths:
@@ -10,7 +10,7 @@ paths:
       parameters:
         - name: "symbol"
           type: "string"
-          description: "stock symbol，use `ticker.region` format，example：`AAPL.US`"
+          description: "Stock symbol, use `ticker.region` format, example: `AAPL.US`"
           required: true
         - name: "order_type"
           type: "string"
@@ -18,32 +18,32 @@ paths:
           required: true
         - name: "submitted_price"
           required: false
-          description: submitted price，example：`388.5`<br/><br/>
-            `LO` / `ELO` / `ALO` / `ODD` / `LIT` Order Required
+          description: "Submitted price, example: `388.5`<br/><br/>
+            `LO` / `ELO` / `ALO` / `ODD` / `LIT` Order Required"
         - name: "submitted_quantity"
           required: true
-          description: submitted quantity，example：`100`
+          description: "Submitted quantity, example: `100`"
         - name: trigger_price
           required: false
-          description: trigger price，example：`388.5`<br/><br/>
-            `LIT` / `MIT` Order Required
+          description: "Trigger price, example: `388.5`<br/><br/>
+            `LIT` / `MIT` Order Required"
         - name: limit_offset
           required: false
-          description: limit offset amount<br/><br/>
+          description: Limit offset amount<br/><br/>
             `TSLPAMT` / `TSLPPCT` Order Required
         - name: trailing_amount
           required: false
-          description: trailing amount<br/><br/>
+          description: Trailing amount<br/><br/>
             `TSLPAMT` / `TSMAMT` Order Required
         - name: trailing_percent
           required: false
-          description: trailing percent<br/><br/>
+          description: Trailing percent<br/><br/>
             `TSLPPCT` / `TSMAPCT` Order Required
         - name: expire_date
           required: false
           description:
-            longterm order expire date， format `YYYY-MM-DD`, example：`2022-12-05`"
-            when time_in_force is `GTD` Required
+            "Long term order expire date, format `YYYY-MM-DD`, example: `2022-12-05`<br/><br/>
+            Required when `time_in_force` is `GTD`"
         - name: side
           type: "string"
           description: Order Side<br/><br/>
@@ -53,7 +53,7 @@ paths:
           required: true
         - name: outside_rth
           required: false
-          description: enabled/disable outside regular trading hours<br/><br/>
+          description: Enable or disable outside regular trading hours<br/><br/>
             **Enum Value:**<br/>
             `RTH_ONLY` - regular trading hour only<br/>
             `ANY_TIME` - any time"
@@ -63,8 +63,8 @@ paths:
             Time in force Type<br/><br/>
             **Enum Value:**<br/>
             `Day` - Day Order<br/>
-            `GTC` - Good 'Til Canceled Order<br/>
-            `GTD` - Good 'Til Date Order"
+            `GTC` - Good Til Canceled Order<br/>
+            `GTD` - Good Til Date Order"
         - name: remark
           required: false
           description: "remark (Maximum 64 characters)"
@@ -76,16 +76,28 @@ paths:
       request_body:
         type: "python"
         value: |
-          def example():
-            from longbridge.http import Auth, Config, HttpClient
-            auth = Auth("${API_KEY}", "${API_KEY_SECRET}", "${TOKEN}")
-            config = Config(base_url = "https://openapi.longbridge.global")
-            client = HttpClient(auth, config)
-            result = client.post("/v1/openapi/trade/order", {
-              "order_type": "LO","side": "Buy","submitted_price": "388",
-              "submitted_quantity": "100","symbol": "700.HK",
+          import os
+          import json
+          from longbridge.http import Auth, Config, HttpClient
+
+          auth = Auth(os.getenv("LONGBRIDGE_APP_KEY"), os.getenv("LONGBRIDGE_APP_SECRET"), access_token=os.getenv("LONGBRIDGE_ACCESS_TOKEN"))
+          http = HttpClient(auth, Config(base_url="https://openapi.longbridge.global"))
+
+          payload = {
+              "side": "Buy",
+              "symbol": "700.HK",
+              "order_type": "LO",
+              "submitted_price": "50",
+              "submitted_quantity": "200",
               "time_in_force": "Day",
-            })
+              "remark": "Hello from Python SDK"
+          }
+
+          try:
+            resp = http.post("/v1/trade/order", payload=payload)
+            print(json.dumps(resp.data, indent=2))
+          except Exception as e:
+            print(f"Submit order error\ncode: {e.code}\nmessage: {e.message}")
       response_body:
         {
           "code": 0,

@@ -72,13 +72,13 @@ Windows 要稍微复杂一些，按下 `Win + R` 快捷键，输入 `cmd` 命令
 
 ```bash
 C:\Users\jason> setx LONGBRIDGE_APP_KEY "从页面上获取到的 App Key"
-成功: 指定的值已得到保存。
+成功：指定的值已得到保存。
 
 C:\Users\jason> setx LONGBRIDGE_APP_SECRET "从页面上获取到的 App Secret"
-成功: 指定的值已得到保存。
+成功：指定的值已得到保存。
 
 C:\Users\jason> setx LONGBRIDGE_ACCESS_TOKEN "从页面上获取到的 Access Token"
-成功: 指定的值已得到保存。
+成功：指定的值已得到保存。
 ```
 
 :::caution
@@ -366,3 +366,9 @@ https://github.com/longbridgeapp/openapi-python/tree/main/examples
 Python SDK 的详细 API 文档请访问：
 
 https://longbridge.readthedocs.io/en/latest/api.html
+
+## 反馈及沟通
+
+* 可以给 Longbridge 服务邮箱发送反馈，邮箱地址是：service@longbridge.global
+* 加入 Longbridge OpenAPI 微信沟通群，二维码如下：
+<img src="https://pub.lbkrs.com/files/202205/akTNrRTBrT5aMX4f/qrcode.jpg" className="max-w-2xl" />

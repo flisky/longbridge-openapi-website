@@ -9,19 +9,29 @@ sidebar_position: 1
 
 ### 1. Enable OpenAPI service
 
-Refer to [Introduction to OpenAPI](... /docs/#How to open) to open the corresponding service.
+Refer to [Introduction to OpenAPI](../docs#how-to-enable) to enable the corresponding services.
 
 ### 2. Get App Key and Access Token information
 
-To get **Access Token**, **App Key** and **App Secret** on [Developer Website](https://open.longbridgeapp.com/account).
+Get **Access Token**, **App Key** and **App Secret** on the [Developer Website](https://open.longbridgeapp.com/account).
+
+**Access Token** will expires in three months. Token can be reset in Developer Website after expiration. Also token can be refresh through invoking [Refresh Token](./refresh-token-api) API before token expired.
 
 ### 3. Calculate signature
+
+:::tip
+
+Most of the content introduced on this page has been fully implemented in our OpenAPI SDK. If you are an SDK user, you can directly ignore the signature authentication part.
+
+This section is intended as a reference for non-SDK users.
+
+:::
 
 After constructing a request based on an corresponding API documentation, call the API directly through the OpenAPI SDK, which will help generate a signature, or create a signature through the following process.
 
 #### Add `X-Api-Key`、`X-Timestamp`、`Authorization` on headers
 
-Set the request parameter header information, `X-Api-Key`, `Authorization`, `X-Timestamp` will be used in the signature function.
+Set the request parameter header information, and `X-Api-Key`, `Authorization`, `X-Timestamp` will be used in the signature function.
 
 ```python
 import time
@@ -56,7 +66,7 @@ def sign(method, uri, headers, params, body, secret):
 
 ```
 
-Signing the request and sets the signature in the request header `X-Api-Signature`.
+Sign the request and set the signature in the request header `X-Api-Signature`.
 
 ```py
 # request method
@@ -76,7 +86,7 @@ headers['X-Api-Signature'] = sign(method, uri, headers, params, body, secret)
 
 Use the HTTP client to send signed requests.
 
-## 基本路径
+## API Path
 
 All API paths start with [https://openapi.longbridge.global](https://openapi.longbridge.global).
 

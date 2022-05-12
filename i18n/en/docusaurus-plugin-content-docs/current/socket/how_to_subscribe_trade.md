@@ -1,5 +1,5 @@
 ---
-title: Subscribe Trade Real-Time Pushing
+title: Subscribe Real-Time Trading Data
 id: how-to-subscribe-trade
 slug: /socket/subscribe_trade
 sidebar_position: 1
@@ -23,7 +23,7 @@ Server -->> Client: Establish Connection
 Client -->> Server: Auth Request
 Server -->> Client: Auth Response
 
-par 订阅
+par Subscribe
 Client -->> Server: Subscribe request，req_id: 10, cmd: 16
 Server -->> Client: Subscribe response ，req_id: 10, cmd: 16
 
